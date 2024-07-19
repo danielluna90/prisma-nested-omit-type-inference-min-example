@@ -3,6 +3,17 @@ import { PrismaClient } from "@prisma/client";
 const prisma: PrismaClient = new PrismaClient();
 
 // Example One: Working example, types are correctly inferred.
+
+/* Type Inferred: ({
+                    model_b: {
+                      id: number;
+                      a_id: number;
+                      c_id: number;
+                    }[];
+                  } & {
+                      id: number;
+                  }) | null
+*/
 async function example_one_func() {
   const example_one = await prisma.a.findFirst({
     include: {
@@ -23,6 +34,16 @@ async function example_one_func() {
 }
 
 // Example Two: Working example, include + omit work together.
+
+/* Type Inferred: ({
+                    model_b: {
+                      id: number;
+                      a_id: number;
+                      private_field: string;
+                      c_id: number;
+                    }[];
+                  } & {}) | null
+*/
 async function example_two_func() {
   const example_two = await prisma.a.findFirst({
     include: {
@@ -42,6 +63,15 @@ async function example_two_func() {
 }
 
 // Example Three: Working Example, nested omits work together.
+
+/* Type Inferred: ({
+                    model_b: {
+                      id: number;
+                      a_id: number;
+                      c_id: number;
+                    }[];
+                  } & {}) | null
+*/
 async function example_three_func() {
   const example_three = await prisma.a.findFirst({
     include: {
@@ -70,6 +100,21 @@ async function example_three_func() {
 // Example 4: Non-Working Example, nested include + omit results in incorrect type being inferred,
 //            but, is working correctly as omitted field is not in returned object. However, notice
 //            that top-level omit does work as intended.
+
+/* Type Inferred: ({
+                    model_b: ({
+                      c: {
+                        id: number;
+                        public_field: string;
+                      };
+                    } & {
+                      id: number;
+                      a_id: number;
+                      private_field: string;
+                      c_id: number;
+                    })[];
+                  } & {}) | null
+*/
 async function example_four_func() {
   const example_four = await prisma.a.findFirst({
     include: {
@@ -104,6 +149,21 @@ async function example_four_func() {
 //            nested include + omit results in incorrect type being inferred,
 //            but, is working correctly as omitted field is not in returned object. Same as above,
 //            notice that top level omit works as intended.
+
+/* Type Inferred: ({
+                    model_b: ({
+                      c: {
+                        id: number;
+                        public_field: string;
+                      };
+                    } & {
+                      id: number;
+                      a_id: number;
+                      private_field: string;
+                      c_id: number;
+                    })[];
+                  } & {}) | null
+*/
 async function example_five_func() {
   // Example 5
   const example_five = await prisma.a.findFirst({
