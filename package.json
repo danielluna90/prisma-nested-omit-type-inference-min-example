@@ -1,25 +1,22 @@
 {
   "name": "prisma-nested-omit-type-inference-min-example",
   "version": "1.0.0",
-  "description": "",
+  "description": "A minimal example showing that type inference in nested omits is not working as intended",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsx src/index.ts"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/danielluna90/prisma-nested-omit-type-inference-min-example.git"
   },
   "author": "Daniel Luna",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/danielluna90/prisma-nested-omit-type-inference-min-example/issues"
-  },
   "homepage": "https://github.com/danielluna90/prisma-nested-omit-type-inference-min-example#readme",
   "devDependencies": {
     "@types/node": "^20.14.11",
     "prisma": "^5.17.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.16.2",
     "typescript": "^5.5.3"
   },
   "dependencies": {
