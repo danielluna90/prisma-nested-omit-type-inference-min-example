@@ -68,7 +68,8 @@ async function example_three_func() {
 }
 
 // Example 4: Non-Working Example, nested include + omit results in incorrect type being inferred,
-//            but, is working correctly as omitted field is not in returned object.
+//            but, is working correctly as omitted field is not in returned object. However, notice
+//            that top-level omit does work as intended.
 async function example_four_func() {
   const example_four = await prisma.a.findFirst({
     include: {
@@ -81,7 +82,11 @@ async function example_four_func() {
         },
       },
     },
+    omit: { id: true },
   });
+
+  // Property 'id' does not exist on type '{ model_b: ({ c: { id: number; public_field: string; }; } & { id: number; a_id: number; private_field: string; c_id: number; })[]; } & {}'. ts(2339)
+  // example_four?.id;
 
   // No Type Error
   example_four?.model_b[0].private_field;
@@ -95,9 +100,10 @@ async function example_four_func() {
   console.log("===================================================");
 }
 
-// Example 4: Non-Working Example, this omits a relation id field instead of a regular field,
+// Example 5: Non-Working Example, this omits a relation id field instead of a regular field,
 //            nested include + omit results in incorrect type being inferred,
-//            but, is working correctly as omitted field is not in returned object.
+//            but, is working correctly as omitted field is not in returned object. Same as above,
+//            notice that top level omit works as intended.
 async function example_five_func() {
   // Example 5
   const example_five = await prisma.a.findFirst({
@@ -111,7 +117,11 @@ async function example_five_func() {
         },
       },
     },
+    omit: { id: true },
   });
+
+  // Property 'id' does not exist on type '{ model_b: ({ c: { id: number; public_field: string; }; } & { id: number; a_id: number; private_field: string; c_id: number; })[]; } & {}'. ts(2339)
+  // example_five?.id;
 
   // No Type Error
   example_five?.model_b[0].c_id;
